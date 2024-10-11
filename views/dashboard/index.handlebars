@@ -1,0 +1,171 @@
+<link rel="stylesheet" href="css/dashboard.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{>_sidebars}}
+
+<section class="bg-white dark:bg-[#141e27]">
+
+<div class="p-4 sm:ml-64">
+      <div class="p-4 mt-14">
+
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4">Dashboard de Jogadores</h1>
+
+            <!-- Parte superior: Gráficos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Jogadores Conectados Agora -->
+                <div class="bg-white dark:bg-[#1f2937] p-6 rounded-lg shadow-lg">
+                    <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Jogadores Conectados Agora</h2>
+                    <canvas id="connectedPlayersChart" class="mt-4"></canvas>
+                </div>
+
+                <!-- Jogadores Totais Hoje -->
+                <div class="bg-white dark:bg-[#1f2937] p-6 rounded-lg shadow-lg">
+                    <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Jogadores Totais Hoje</h2>
+                    <canvas id="totalPlayersTodayChart" class="mt-4"></canvas>
+                </div>
+
+                <!-- Jogadores de Ontem para Hoje -->
+                <div class="bg-white dark:bg-[#1f2937] p-6 rounded-lg shadow-lg">
+                    <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Jogadores de Ontem para Hoje</h2>
+                    <canvas id="yesterdayToTodayPlayersChart" class="mt-4"></canvas>
+                </div>
+            </div>
+
+            <!-- Parte inferior: Jogadores Totais por Mês e Comparação Anual -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Jogadores Totais por Mês -->
+                <div class="bg-white dark:bg-[#1f2937] p-6 rounded-lg shadow-lg">
+                    <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Jogadores Totais por Mês</h2>
+                    <canvas id="monthlyPlayersChart" class="mt-4"></canvas>
+                </div>
+
+                <!-- Comparação Anual de Jogadores (Gráfico de Rosca) -->
+<div class="bg-white dark:bg-[#1f2937] p-6 rounded-lg shadow-lg">
+    <h2 class="text-lg font-semibold text-gray-700 dark:text-gray-300">Comparação Anual de Jogadores</h2>
+    <div class="flex justify-center">
+        <canvas id="yearlyComparisonChart" class="mt-4" style="max-width: 300px; max-height: 300px;"></canvas>
+    </div>
+</div>
+
+
+            </div>
+      </div>
+</div>
+</section>
+<script>
+         // Dados e configuração para o gráfico de jogadores conectados
+        const connectedPlayersCtx = document.getElementById('connectedPlayersChart').getContext('2d');
+        const connectedPlayersChart = new Chart(connectedPlayersCtx, {
+            type: 'line',
+            data: {
+                labels: ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00'],
+                datasets: [{
+                    label: 'Jogadores Conectados',
+                    data: [150, 180, 170, 210, 240, 230],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Dados e configuração para o gráfico de jogadores totais hoje
+        const totalPlayersTodayCtx = document.getElementById('totalPlayersTodayChart').getContext('2d');
+        const totalPlayersTodayChart = new Chart(totalPlayersTodayCtx, {
+            type: 'bar',
+            data: {
+                labels: ['00:00', '06:00', '12:00', '18:00', '23:59'],
+                datasets: [{
+                    label: 'Jogadores Totais Hoje',
+                    data: [200, 400, 600, 800, 1000],
+                    backgroundColor: 'rgba(255, 159, 64, 0.2)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Dados e configuração para o gráfico de jogadores de ontem para hoje
+        const yesterdayToTodayPlayersCtx = document.getElementById('yesterdayToTodayPlayersChart').getContext('2d');
+        const yesterdayToTodayPlayersChart = new Chart(yesterdayToTodayPlayersCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Ontem', 'Hoje'],
+                datasets: [{
+                    label: 'Jogadores',
+                    data: [800, 950],
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Dados e configuração para o gráfico de jogadores totais por mês
+        const monthlyPlayersCtx = document.getElementById('monthlyPlayersChart').getContext('2d');
+        const monthlyPlayersChart = new Chart(monthlyPlayersCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                datasets: [{
+                    label: 'Jogadores Totais',
+                    data: [15000, 14000, 16000, 17000, 18000, 19000, 20000, 21000, 22000, 23000, 24000, 25000],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Dados e configuração para o gráfico de comparação anual (gráfico de rosca)
+        const yearlyComparisonCtx = document.getElementById('yearlyComparisonChart').getContext('2d');
+        const yearlyComparisonChart = new Chart(yearlyComparisonCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['2022', '2023'],
+                datasets: [{
+                    label: 'Jogadores por Ano',
+                    data: [250000, 270000],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
+    </script>
